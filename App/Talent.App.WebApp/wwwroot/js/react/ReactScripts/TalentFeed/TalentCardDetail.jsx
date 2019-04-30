@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactPlayer from 'react-player';
-import { Popup, Icon, Card, Embed, Label, Image, Segment } from 'semantic-ui-react'
+import { Embed, Label } from 'semantic-ui-react'
 
 export default class TalentCardDetail extends React.Component {
     constructor(props) {
@@ -11,6 +11,7 @@ export default class TalentCardDetail extends React.Component {
         };
         this.handleView = this.handleView.bind(this);
         this.getProfile = this.getProfile.bind(this);
+        this.handleWeb = this.handleWeb.bind(this);
     }
 
     getProfile() {
@@ -59,6 +60,18 @@ export default class TalentCardDetail extends React.Component {
         const showing = !this.state.showProfile;
         this.setState({ showProfile: showing });
     }
+
+    handleWeb(account) {
+        let website = this.props.talent.linkedAccounts[account];
+        if (website) {
+            website = "https://" + website;
+            window.open(website);
+        }
+        else {
+            alert(`No ${account} info provided`);
+        }
+    }
+
     render() {
         let talent = this.props.talent;
         let talentName = talent.name ? talent.name : "Name";
@@ -72,9 +85,9 @@ export default class TalentCardDetail extends React.Component {
                     </div>
                 </div>
                 <div className="content">
-                    {this.state.showProfile ? this.getProfile() : <Embed url="http://localhost:61771/images/video/demo.mp4" />}
+                    {this.state.showProfile ? this.getProfile() : <Embed url="http://localhost:61771/images/video/demo.mp4"/>}
                 </div>
-                <div className="center aligned content">
+                <div className="center aligned content" style={{ cursor:'pointer' }}>
                     <div className="ui grid">
                         <div className="four wide column">
                             {this.state.showProfile ? <i className="video icon" onClick={this.handleView}></i> :
@@ -84,10 +97,10 @@ export default class TalentCardDetail extends React.Component {
                             <i className="file pdf outline icon"></i>
                         </div>
                         <div className="four wide column">
-                            <i className="linkedin icon"></i>
+                            <i className="linkedin icon" onClick={() => this.handleWeb('linkedIn')}></i>
                         </div>
                         <div className="four wide column">
-                            <i className="github icon"></i>
+                            <i className="github icon" onClick={() => this.handleWeb('github')}></i>
                         </div>
                     </div>
                 </div>
